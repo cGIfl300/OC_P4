@@ -33,6 +33,14 @@ def parse_arguments():
         help="edit players",
     )
 
+    parser.add_argument(
+        "-st",
+        "--stop_tour",
+        help="stop tour and ask for matchs results",
+    )
+
+    return parser.parse_args()
+
 
 def main():
     args = parse_arguments()

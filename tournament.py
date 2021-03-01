@@ -27,16 +27,37 @@ class Tournament(Basic):
         self.active_tour += 1
         self.tours.append(Tour(self))
 
+    def stop_tour(self):
+        for match in self.tours[self.active_tour].matchs:
+            print(f"Round {self.active_tour}")
+            print(f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
+            print(f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
+            resultat = input("1. Joueur 1 gagnant\n"
+                             "2. Joueur 2 gagnant\n"
+                             "3. Match Null\n")
+            if resultat == 1:
+                match.player1.score = 1
+                match.player2.score = 0
+
+            if resultat == 2:
+                match.player1.score = 0
+                match.player2.score = 1
+
+            if resultat == 3:
+                match.player1.score = 0.5
+                match.player2.score = 0.5
+
+
     def score_player(self, player):
         score_total = 0
         for _ in self.tours:
             for match in _.matchs:
                 if (match.player1.surname == player.surname) and (
-                    match.player1.forename == player.forename
+                        match.player1.forename == player.forename
                 ):
                     score_total += match.score1
                 if (match.player2.surname == player.surname) and (
-                    match.player2.forename == player.forename
+                        match.player2.forename == player.forename
                 ):
                     score_total += match.score2
         return score_total
@@ -49,7 +70,7 @@ class Tournament(Basic):
         at_table.insert(dic)
 
 
-def restore():
+def restore_tournament():
     db = TinyDB("data/db.json")
     at_table = db.table("active_tournament")
     return jsonpickle.decode(at_table.all()[0]["Actual"])
@@ -162,6 +183,7 @@ def test():
     for _ in range(tournois.rounds + 1):
         print(f"Tour numéro {_ + 1}")
         tournois.new_tour()
+        tournois.stop_tour()
 
     # Serialize
     print("Sérialisation\n")
@@ -175,7 +197,7 @@ def test():
         print(_.title)
 
     new_tournois.save()
-    new_tournois = restore()
+    new_tournois = restore_tournament()
 
     print("Après unserialization")
     for _ in new_tournois.tours:
