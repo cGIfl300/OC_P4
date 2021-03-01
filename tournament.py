@@ -31,9 +31,13 @@ class Tournament(Basic):
         score_total = 0
         for _ in self.tours:
             for match in _.matchs:
-                if (match.player1.surname == player.surname) and (match.player1.forename == player.forename):
+                if (match.player1.surname == player.surname) and (
+                    match.player1.forename == player.forename
+                ):
                     score_total += match.score1
-                if (match.player2.surname == player.surname) and (match.player2.forename == player.forename):
+                if (match.player2.surname == player.surname) and (
+                    match.player2.forename == player.forename
+                ):
                     score_total += match.score2
         return score_total
 
@@ -44,11 +48,11 @@ class Tournament(Basic):
         dic = {"Actual": jsonpickle.encode(self)}
         at_table.insert(dic)
 
-    @staticmethod
-    def restore():
-        db = TinyDB("data/db.json")
-        at_table = db.table("active_tournament")
-        self = jsonpickle.decode(at_table.all()[0]['Actual'])
+
+def restore():
+    db = TinyDB("data/db.json")
+    at_table = db.table("active_tournament")
+    return jsonpickle.decode(at_table.all()[0]["Actual"])
 
 
 class Tour:
@@ -57,18 +61,28 @@ class Tour:
         self.tournament = tournament
         self.title = f"Round {self.tournament.active_tour + 1}"
         players_unordered = self.tournament.players
-        self.ranked_players = sorted(players_unordered, key=lambda ordering_value: ordering_value.rank)
+        self.ranked_players = sorted(
+            players_unordered, key=lambda ordering_value: ordering_value.rank
+        )
         self.ranked_players.reverse()
 
         print("Création des matchs")
         len_players_list = len(self.ranked_players)
         median = int(len_players_list / 2)
         for _ in range(median):
-            print(f"Match {_} : {self.ranked_players[_].surname} {self.ranked_players[_ + median].surname}")
-            self.matchs.append(Match({"player1": self.ranked_players[_],
-                                      "player2": self.ranked_players[_ + median],
-                                      "score1": 0,
-                                      "score2": 0}))
+            print(
+                f"Match {_} : {self.ranked_players[_].surname} {self.ranked_players[_ + median].surname}"
+            )
+            self.matchs.append(
+                Match(
+                    {
+                        "player1": self.ranked_players[_],
+                        "player2": self.ranked_players[_ + median],
+                        "score1": 0,
+                        "score2": 0,
+                    }
+                )
+            )
 
 
 class Match(Basic):
@@ -161,12 +175,12 @@ def test():
         print(_.title)
 
     new_tournois.save()
-    new_tournois.restore()
+    new_tournois = restore()
 
     print("Après unserialization")
     for _ in new_tournois.tours:
         print(_.title)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test()

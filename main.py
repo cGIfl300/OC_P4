@@ -9,6 +9,30 @@ def parse_arguments():
         help="create a new tournament",
     )
 
+    parser.add_argument(
+        "-e",
+        "--edit",
+        help="edit tournament properties",
+    )
+
+    parser.add_argument(
+        "-d",
+        "--delete",
+        help="delete tournament",
+    )
+
+    parser.add_argument(
+        "-cp",
+        "--create_players",
+        help="create players",
+    )
+
+    parser.add_argument(
+        "-ep",
+        "--edit_players",
+        help="edit players",
+    )
+
 
 def main():
     args = parse_arguments()
