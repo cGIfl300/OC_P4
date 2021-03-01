@@ -36,16 +36,16 @@ class Tournament(Basic):
                              "2. Joueur 2 gagnant\n"
                              "3. Match Null\n")
             if resultat == 1:
-                match.player1.score = 1
-                match.player2.score = 0
+                match.score1 = 1
+                match.score2 = 0
 
             if resultat == 2:
-                match.player1.score = 0
-                match.player2.score = 1
+                match.score1 = 0
+                match.score2 = 1
 
             if resultat == 3:
-                match.player1.score = 0.5
-                match.player2.score = 0.5
+                match.score1 = 0.5
+                match.score2 = 0.5
 
 
     def score_player(self, player):
@@ -203,6 +203,8 @@ def test():
     for _ in new_tournois.tours:
         print(_.title)
 
+    print(f"Affichage du score {new_tournois.players[0].surname} {new_tournois.players[0].forename}")
+    print(f"Score: {new_tournois.score_player(new_tournois.players[0])}")
 
 if __name__ == "__main__":
     test()
