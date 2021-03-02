@@ -11,11 +11,11 @@ class Basic:
 
 class Tournament(Basic):
     def __init__(self, dic):
-        super().__init__(dic)
         self.players = []
         self.tours = []
         self.rounds = 4
         self.active_tour = -1
+        super().__init__(dic)
 
     def add_player(self, dic):
         self.players.append(Player(dic))
@@ -30,12 +30,16 @@ class Tournament(Basic):
     def stop_tour(self):
         for match in self.tours[self.active_tour].matchs:
             print(f"Round {self.active_tour}")
-            print(f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
-            print(f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
-            #resultat = input("1. Joueur 1 gagnant\n"
+            print(
+                f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}"
+            )
+            print(
+                f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}"
+            )
+            # resultat = input("1. Joueur 1 gagnant\n"
             #                 "2. Joueur 2 gagnant\n"
             #                 "3. Match Null\n")
-            resultat = 1
+            resultat = 2
             if resultat == 1:
                 match.score1 = 1
                 match.score2 = 0
@@ -48,18 +52,16 @@ class Tournament(Basic):
                 match.score1 = 0.5
                 match.score2 = 0.5
 
-
     def score_player(self, player):
         score_total = 0
-        print(f"Calcul du score de {player}")
         for _ in self.tours:
             for match in _.matchs:
                 if (match.player1.surname == player.surname) and (
-                        match.player1.forename == player.forename
+                    match.player1.forename == player.forename
                 ):
                     score_total += match.score1
                 if (match.player2.surname == player.surname) and (
-                        match.player2.forename == player.forename
+                    match.player2.forename == player.forename
                 ):
                     score_total += match.score2
         return score_total
@@ -71,11 +73,10 @@ class Tournament(Basic):
         dic = {"Actual": jsonpickle.encode(self)}
         at_table.insert(dic)
 
-
-def restore_tournament():
-    db = TinyDB("data/db.json")
-    at_table = db.table("active_tournament")
-    return jsonpickle.decode(at_table.all()[0]["Actual"])
+    def restore(self):
+        db = TinyDB("data/db.json")
+        at_table = db.table("active_tournament")
+        self.__dict__.update(jsonpickle.decode(at_table.all()[0]["Actual"]).__dict__)
 
 
 class Tour:
@@ -119,7 +120,7 @@ class Player(Basic):
 
 
 def test():
-    tournois = Tournament({"colibri": "pamplemousse"})
+    tournois = Tournament({"rounds": 4})
     properties = [
         {
             "surname": "DUPUIS",
@@ -182,10 +183,15 @@ def test():
         tournois.add_player(_)
     for player in tournois.players:
         print(player.surname)
+
     for _ in range(tournois.rounds + 1):
         print(f"Tour numéro {_ + 1}")
         tournois.new_tour()
         tournois.stop_tour()
+        print(
+            f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
+        )
+        print(f"Score: {tournois.score_player(tournois.players[0])}")
 
     # Serialize
     print("Sérialisation\n")
@@ -199,14 +205,16 @@ def test():
         print(_.title)
 
     new_tournois.save()
-    new_tournois = restore_tournament()
+    new_tournois.restore()
 
-    print("Après unserialization")
+    # Après sérialization et déserialization
     for _ in new_tournois.tours:
         print(_.title)
+    print(
+        f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
+    )
+    print(f"Score: {tournois.score_player(tournois.players[0])}")
 
-    print(f"Affichage du score {new_tournois.players[0].surname} {new_tournois.players[0].forename}")
-    print(f"Score: {new_tournois.score_player(new_tournois.players[0])}")
 
 if __name__ == "__main__":
     test()
