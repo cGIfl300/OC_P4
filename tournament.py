@@ -32,9 +32,10 @@ class Tournament(Basic):
             print(f"Round {self.active_tour}")
             print(f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
             print(f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
-            resultat = input("1. Joueur 1 gagnant\n"
-                             "2. Joueur 2 gagnant\n"
-                             "3. Match Null\n")
+            #resultat = input("1. Joueur 1 gagnant\n"
+            #                 "2. Joueur 2 gagnant\n"
+            #                 "3. Match Null\n")
+            resultat = 1
             if resultat == 1:
                 match.score1 = 1
                 match.score2 = 0
@@ -50,6 +51,7 @@ class Tournament(Basic):
 
     def score_player(self, player):
         score_total = 0
+        print(f"Calcul du score de {player}")
         for _ in self.tours:
             for match in _.matchs:
                 if (match.player1.surname == player.surname) and (
