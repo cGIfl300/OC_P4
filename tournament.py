@@ -1,3 +1,5 @@
+from random import randint
+
 import jsonpickle
 from tinydb import TinyDB
 
@@ -18,6 +20,11 @@ class Tournament(Basic):
         super().__init__(dic)
 
     def add_player(self, dic):
+        """
+        Add a player from a dictionary
+        :param dic: player's properties
+        :return:
+        """
         self.players.append(Player(dic))
 
     def new_tour(self):
@@ -36,19 +43,19 @@ class Tournament(Basic):
             print(
                 f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}"
             )
-            # resultat = input("1. Joueur 1 gagnant\n"
-            #                 "2. Joueur 2 gagnant\n"
-            #                 "3. Match Null\n")
-            resultat = 2
-            if resultat == 1:
+            # match_score = input("1. Joueur 1 gagnant\n"
+            #                     "2. Joueur 2 gagnant\n"
+            #                     "3. Match Null\n")
+            match_score = randint(1, 3)
+            if match_score == 1:
                 match.score1 = 1
                 match.score2 = 0
 
-            if resultat == 2:
+            if match_score == 2:
                 match.score1 = 0
                 match.score2 = 1
 
-            if resultat == 3:
+            if match_score == 3:
                 match.score1 = 0.5
                 match.score2 = 0.5
 
@@ -91,8 +98,16 @@ class Tour:
         self.ranked_players.reverse()
 
         print("Création des matchs")
+        self.matchs_list()
+
+    def matchs_list(self):
+        """
+        Generate the matchs list for the round
+        :return:
+        """
         len_players_list = len(self.ranked_players)
         median = int(len_players_list / 2)
+
         for _ in range(median):
             print(
                 f"Match {_} : {self.ranked_players[_].surname} {self.ranked_players[_ + median].surname}"
