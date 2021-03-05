@@ -5,7 +5,7 @@ from tinydb import TinyDB
 
 
 class Basic:
-    # Define a basic class for heritage
+    # Define a basic class for heritage, convert a dictionary to class attributes
     def __init__(self, dic):
         for attr_name, attr_value in dic.items():
             setattr(self, attr_name, attr_value)
@@ -64,11 +64,11 @@ class Tournament(Basic):
         for _ in self.tours:
             for match in _.matchs:
                 if (match.player1.surname == player.surname) and (
-                    match.player1.forename == player.forename
+                        match.player1.forename == player.forename
                 ):
                     score_total += match.score1
                 if (match.player2.surname == player.surname) and (
-                    match.player2.forename == player.forename
+                        match.player2.forename == player.forename
                 ):
                     score_total += match.score2
         return score_total
@@ -113,7 +113,8 @@ class Tour:
 
         for _ in range(median):
             print(
-                f"Match {_} : {self.ranked_players[_].surname} {self.ranked_players[_ + median].surname}"
+                f"Match {_} : {self.ranked_players[_].surname} "
+                f"{self.ranked_players[_ + median].surname}"
             )
             self.matchs.append(
                 Match(
@@ -138,8 +139,8 @@ class Player(Basic):
 
 
 def test():
-    ROUNDS_TO_TEST = 400
-    tournois = Tournament({"rounds": ROUNDS_TO_TEST})
+    rounds_to_test = 4
+    tournois = Tournament({"rounds": rounds_to_test})
     properties = [
         {
             "surname": "DUPUIS",
@@ -212,28 +213,29 @@ def test():
         )
         print(f"Score: {tournois.score_player(tournois.players[0])}")
 
-#     test002(tournois)
-#
-#
-# def test002(tournois):
-#     # Serialize
-#     print("Sérialisation\n")
-#     tournois_serialize = jsonpickle.encode(tournois)
-#     print(tournois_serialize)
-#     # Unserialize
-#     print("Desérialisation\n")
-#     new_tournois = jsonpickle.decode(tournois_serialize)
-#     for _ in new_tournois.tours:
-#         print(_.title)
-#     new_tournois.save()
-#     new_tournois.restore()
-#     # Après sérialization et déserialization
-#     for _ in new_tournois.tours:
-#         print(_.title)
-#     print(
-#         f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
-#     )
-#     print(f"Score: {tournois.score_player(tournois.players[0])}")
+
+    test002(tournois)
+
+
+def test002(tournois):
+    # Serialize
+    print("Sérialisation\n")
+    tournois_serialize = jsonpickle.encode(tournois)
+    print(tournois_serialize)
+    # Unserialize
+    print("Desérialisation\n")
+    new_tournois = jsonpickle.decode(tournois_serialize)
+    for _ in new_tournois.tours:
+        print(_.title)
+    new_tournois.save()
+    new_tournois.restore()
+    # Après sérialization et déserialization
+    for _ in new_tournois.tours:
+        print(_.title)
+    print(
+        f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
+    )
+    print(f"Score: {tournois.score_player(tournois.players[0])}")
 
 
 if __name__ == "__main__":
