@@ -91,9 +91,12 @@ class Tour:
         self.matchs = []
         self.tournament = tournament
         self.title = f"Round {self.tournament.active_tour + 1}"
+
         players_unordered = self.tournament.players
         self.ranked_players = sorted(
-            players_unordered, key=lambda ordering_value: ordering_value.rank
+            players_unordered,
+            key=lambda ordering_value: (ordering_value.rank,
+                                        tournament.score_player(ordering_value))
         )
         self.ranked_players.reverse()
 
@@ -135,7 +138,8 @@ class Player(Basic):
 
 
 def test():
-    tournois = Tournament({"rounds": 4})
+    ROUNDS_TO_TEST = 400
+    tournois = Tournament({"rounds": ROUNDS_TO_TEST})
     properties = [
         {
             "surname": "DUPUIS",
@@ -208,27 +212,28 @@ def test():
         )
         print(f"Score: {tournois.score_player(tournois.players[0])}")
 
-    # Serialize
-    print("Sérialisation\n")
-    tournois_serialize = jsonpickle.encode(tournois)
-    print(tournois_serialize)
-
-    # Unserialize
-    print("Desérialisation\n")
-    new_tournois = jsonpickle.decode(tournois_serialize)
-    for _ in new_tournois.tours:
-        print(_.title)
-
-    new_tournois.save()
-    new_tournois.restore()
-
-    # Après sérialization et déserialization
-    for _ in new_tournois.tours:
-        print(_.title)
-    print(
-        f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
-    )
-    print(f"Score: {tournois.score_player(tournois.players[0])}")
+#     test002(tournois)
+#
+#
+# def test002(tournois):
+#     # Serialize
+#     print("Sérialisation\n")
+#     tournois_serialize = jsonpickle.encode(tournois)
+#     print(tournois_serialize)
+#     # Unserialize
+#     print("Desérialisation\n")
+#     new_tournois = jsonpickle.decode(tournois_serialize)
+#     for _ in new_tournois.tours:
+#         print(_.title)
+#     new_tournois.save()
+#     new_tournois.restore()
+#     # Après sérialization et déserialization
+#     for _ in new_tournois.tours:
+#         print(_.title)
+#     print(
+#         f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
+#     )
+#     print(f"Score: {tournois.score_player(tournois.players[0])}")
 
 
 if __name__ == "__main__":
