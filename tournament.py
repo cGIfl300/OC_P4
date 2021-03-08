@@ -17,6 +17,7 @@ class Tournament(Basic):
         self.tours = []
         self.rounds = 4
         self.active_tour = -1
+        self.name = "Untilted"
         super().__init__(dic)
 
     def add_player(self, dic):
@@ -80,11 +81,11 @@ class Tournament(Basic):
         for _ in self.tours:
             for match in _.matchs:
                 if (match.player1.surname == player.surname) and (
-                        match.player1.forename == player.forename
+                    match.player1.forename == player.forename
                 ):
                     score_total += match.score1
                 if (match.player2.surname == player.surname) and (
-                        match.player2.forename == player.forename
+                    match.player2.forename == player.forename
                 ):
                     score_total += match.score2
         return score_total
@@ -101,19 +102,19 @@ class Tournament(Basic):
                 score_total = 0
                 # Match for player1
                 if (
-                        (match.player1.surname == player1.surname)
-                        and (match.player1.forename == player1.forename)
-                        or (match.player2.surname == player1.surname)
-                        and (match.player2.forename == player1.forename)
+                    (match.player1.surname == player1.surname)
+                    and (match.player1.forename == player1.forename)
+                    or (match.player2.surname == player1.surname)
+                    and (match.player2.forename == player1.forename)
                 ):
                     score_total += 1
 
                 # Match for player2
                 if (
-                        (match.player1.surname == player2.surname)
-                        and (match.player1.forename == player2.forename)
-                        or (match.player2.surname == player2.surname)
-                        and (match.player2.forename == player2.forename)
+                    (match.player1.surname == player2.surname)
+                    and (match.player1.forename == player2.forename)
+                    or (match.player2.surname == player2.surname)
+                    and (match.player2.forename == player2.forename)
                 ):
                     score_total += 1
                 if score_total == 2:
@@ -139,6 +140,17 @@ class Tournament(Basic):
         db = TinyDB("data/db.json")
         at_table = db.table("active_tournament")
         self.__dict__.update(jsonpickle.decode(at_table.all()[0]["Actual"]).__dict__)
+
+    def backup_new(self):
+        """
+        Add a tournament backup
+        :return: Nothing
+        """
+        db = TinyDB("data/db.json")
+        at_table = db.table("tournaments")
+        at_table.truncate()
+        dic = {f"{self.name}": jsonpickle.encode(self)}
+        at_table.insert(dic)
 
 
 class Tour:
