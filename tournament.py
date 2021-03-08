@@ -28,10 +28,10 @@ class Tournament(Basic):
         self.players.append(Player(dic))
 
     def new_tour(self):
-        '''
+        """
         Start a new tour
         :return: Nothing
-        '''
+        """
         if self.active_tour == self.rounds - 1:
             print("Le tournois est terminé.")
             return
@@ -39,10 +39,10 @@ class Tournament(Basic):
         self.tours.append(Tour(self))
 
     def stop_tour(self):
-        '''
+        """
         Stop actual tour. Record time and ask for player's scores.
         :return:
-        '''
+        """
         if self.active_tour == self.rounds - 1:
             print("Le tournois est terminé.")
             return
@@ -71,11 +71,11 @@ class Tournament(Basic):
                 match.score2 = 0.5
 
     def score_player(self, player):
-        '''
+        """
         Return player score
         :param player:
         :return: player's score (float)
-        '''
+        """
         score_total = 0
         for _ in self.tours:
             for match in _.matchs:
@@ -90,25 +90,30 @@ class Tournament(Basic):
         return score_total
 
     def played_togethers(self, player1, player2):
-        '''
+        """
         Return True if players ever played together False if not
         :param player1:
         :param player2:
         :return: True / False
-        '''
+        """
         for _ in self.tours:
             for match in _.matchs:
                 score_total = 0
                 # Match for player1
-                if (match.player1.surname == player1.surname) and (
-                        match.player1.forename == player1.forename
-                ) or (match.player2.surname == player1.surname) and (match.player2.forename == player1.forename):
+                if (
+                        (match.player1.surname == player1.surname)
+                        and (match.player1.forename == player1.forename)
+                        or (match.player2.surname == player1.surname)
+                        and (match.player2.forename == player1.forename)
+                ):
                     score_total += 1
 
                 # Match for player2
-                if (match.player1.surname == player2.surname) and (
-                        match.player1.forename == player2.forename) or (match.player2.surname == player2.surname) and (
-                        match.player2.forename == player2.forename
+                if (
+                        (match.player1.surname == player2.surname)
+                        and (match.player1.forename == player2.forename)
+                        or (match.player2.surname == player2.surname)
+                        and (match.player2.forename == player2.forename)
                 ):
                     score_total += 1
                 if score_total == 2:
@@ -116,10 +121,10 @@ class Tournament(Basic):
         return False
 
     def save(self):
-        '''
+        """
         Save tournament state (actual one)
         :return: Nothing
-        '''
+        """
         db = TinyDB("data/db.json")
         at_table = db.table("active_tournament")
         at_table.truncate()
@@ -127,10 +132,10 @@ class Tournament(Basic):
         at_table.insert(dic)
 
     def restore(self):
-        '''
+        """
         Restore actual tournament from the database
         :return: Nothing
-        '''
+        """
         db = TinyDB("data/db.json")
         at_table = db.table("active_tournament")
         self.__dict__.update(jsonpickle.decode(at_table.all()[0]["Actual"]).__dict__)
@@ -145,8 +150,10 @@ class Tour:
         players_unordered = self.tournament.players
         self.ranked_players = sorted(
             players_unordered,
-            key=lambda ordering_value: (ordering_value.rank,
-                                        tournament.score_player(ordering_value))
+            key=lambda ordering_value: (
+                ordering_value.rank,
+                tournament.score_player(ordering_value),
+            ),
         )
         self.ranked_players.reverse()
 
@@ -175,10 +182,13 @@ class Tour:
                 if (_ + median + players_cursor) < (len_players_list - 1):
                     players_cursor += 1
                     # If players played together, then we swap players in the list
-                    (self.ranked_players[_ + median],
-                     self.ranked_players[_ + median + players_cursor]) = (
+                    (
+                        self.ranked_players[_ + median],
                         self.ranked_players[_ + median + players_cursor],
-                        self.ranked_players[_ + median])
+                    ) = (
+                        self.ranked_players[_ + median + players_cursor],
+                        self.ranked_players[_ + median],
+                    )
                     player2 = self.ranked_players[_ + median]
                 else:
                     out_of_players = True
@@ -186,10 +196,7 @@ class Tour:
             # Don't forget to re-initialize the players cursor for next match...
             players_cursor = 0
 
-            print(
-                f"Match {_ + 1} : {player1.surname} "
-                f"{player2.surname}"
-            )
+            print(f"Match {_ + 1} : {player1.surname} " f"{player2.surname}")
             self.matchs.append(
                 Match(
                     {
