@@ -23,11 +23,15 @@ class Tournament(Basic):
         """
         Add a player from a dictionary
         :param dic: player's properties
-        :return:
+        :return: Nothing
         """
         self.players.append(Player(dic))
 
     def new_tour(self):
+        '''
+        Start a new tour
+        :return: Nothing
+        '''
         if self.active_tour == self.rounds - 1:
             print("Le tournois est terminé.")
             return
@@ -35,6 +39,13 @@ class Tournament(Basic):
         self.tours.append(Tour(self))
 
     def stop_tour(self):
+        '''
+        Stop actual tour. Record time and ask for player's scores.
+        :return:
+        '''
+        if self.active_tour == self.rounds - 1:
+            print("Le tournois est terminé.")
+            return
         for match in self.tours[self.active_tour].matchs:
             print(f"Round {self.active_tour}")
             print(
@@ -60,6 +71,11 @@ class Tournament(Basic):
                 match.score2 = 0.5
 
     def score_player(self, player):
+        '''
+        Return player score
+        :param player:
+        :return: player's score (float)
+        '''
         score_total = 0
         for _ in self.tours:
             for match in _.matchs:
@@ -73,7 +89,37 @@ class Tournament(Basic):
                     score_total += match.score2
         return score_total
 
+    def played_togethers(self, player1, player2):
+        '''
+        Return True if players ever played together False if not
+        :param player1:
+        :param player2:
+        :return: True / False
+        '''
+        for _ in self.tours:
+            for match in _.matchs:
+                score_total = 0
+                # Match for player1
+                if (match.player1.surname == player1.surname) and (
+                        match.player1.forename == player1.forename
+                ) or (match.player2.surname == player1.surname) and (match.player2.forename == player1.forename):
+                    score_total += 1
+
+                # Match for player2
+                if (match.player1.surname == player2.surname) and (
+                        match.player1.forename == player2.forename) or (match.player2.surname == player2.surname) and (
+                        match.player2.forename == player2.forename
+                ):
+                    score_total += 1
+                if score_total == 2:
+                    return True
+        return False
+
     def save(self):
+        '''
+        Save tournament state (actual one)
+        :return: Nothing
+        '''
         db = TinyDB("data/db.json")
         at_table = db.table("active_tournament")
         at_table.truncate()
@@ -81,6 +127,10 @@ class Tournament(Basic):
         at_table.insert(dic)
 
     def restore(self):
+        '''
+        Restore actual tournament from the database
+        :return: Nothing
+        '''
         db = TinyDB("data/db.json")
         at_table = db.table("active_tournament")
         self.__dict__.update(jsonpickle.decode(at_table.all()[0]["Actual"]).__dict__)
@@ -108,19 +158,43 @@ class Tour:
         Generate the matchs list for the round
         :return:
         """
+        out_of_players = False
+        players_cursor = 0
+
         len_players_list = len(self.ranked_players)
         median = int(len_players_list / 2)
 
+        # Prevent from playing the same match
         for _ in range(median):
+
+            player1 = self.ranked_players[_]
+            player2 = self.ranked_players[_ + median]
+
+            while self.tournament.played_togethers(player1, player2) or out_of_players:
+
+                if (_ + median + players_cursor) < (len_players_list - 1):
+                    players_cursor += 1
+                    # If players played together, then we swap players in the list
+                    (self.ranked_players[_ + median],
+                     self.ranked_players[_ + median + players_cursor]) = (
+                        self.ranked_players[_ + median + players_cursor],
+                        self.ranked_players[_ + median])
+                    player2 = self.ranked_players[_ + median]
+                else:
+                    out_of_players = True
+
+            # Don't forget to re-initialize the players cursor for next match...
+            players_cursor = 0
+
             print(
-                f"Match {_} : {self.ranked_players[_].surname} "
-                f"{self.ranked_players[_ + median].surname}"
+                f"Match {_ + 1} : {player1.surname} "
+                f"{player2.surname}"
             )
             self.matchs.append(
                 Match(
                     {
-                        "player1": self.ranked_players[_],
-                        "player2": self.ranked_players[_ + median],
+                        "player1": player1,
+                        "player2": player2,
                         "score1": 0,
                         "score2": 0,
                     }
@@ -214,28 +288,28 @@ def test():
         print(f"Score: {tournois.score_player(tournois.players[0])}")
 
 
-    test002(tournois)
-
-
-def test002(tournois):
-    # Serialize
-    print("Sérialisation\n")
-    tournois_serialize = jsonpickle.encode(tournois)
-    print(tournois_serialize)
-    # Unserialize
-    print("Desérialisation\n")
-    new_tournois = jsonpickle.decode(tournois_serialize)
-    for _ in new_tournois.tours:
-        print(_.title)
-    new_tournois.save()
-    new_tournois.restore()
-    # Après sérialization et déserialization
-    for _ in new_tournois.tours:
-        print(_.title)
-    print(
-        f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
-    )
-    print(f"Score: {tournois.score_player(tournois.players[0])}")
+#     test002(tournois)
+#
+#
+# def test002(tournois):
+#     # Serialize
+#     print("Sérialisation\n")
+#     tournois_serialize = jsonpickle.encode(tournois)
+#     print(tournois_serialize)
+#     # Unserialize
+#     print("Desérialisation\n")
+#     new_tournois = jsonpickle.decode(tournois_serialize)
+#     for _ in new_tournois.tours:
+#         print(_.title)
+#     new_tournois.save()
+#     new_tournois.restore()
+#     # Après sérialization et déserialization
+#     for _ in new_tournois.tours:
+#         print(_.title)
+#     print(
+#         f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
+#     )
+#     print(f"Score: {tournois.score_player(tournois.players[0])}")
 
 
 if __name__ == "__main__":
