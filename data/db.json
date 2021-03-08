@@ -1,7 +1,0 @@
-{
-  "active_tournament": {
-    "1": {
-      "Actual": "{\"py/object\": \"tournament.Tournament\", \"players\": [], \"tours\": [], \"rounds\": \"fdsq\", \"active_tour\": -1, \"name\": \"carnibal\", \"place\": \"fds\", \"date\": \"fdsq\", \"time_control\": \"fdsq\", \"comment\": \"fdsq\"}"
-    }
-  }
-}
