@@ -86,7 +86,8 @@ def test():
         tournois.stop_tour()
         simulate_match(tournois)
         print(
-            f"Affichage du score {tournois.players[0].surname} {tournois.players[0].forename}"
+            f"Affichage du score {tournois.players[0].surname}"
+            f" {tournois.players[0].forename}"
         )
         print(f"Score: {tournois.score_player(tournois.players[0])}")
 
