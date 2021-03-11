@@ -1,2 +1,4 @@
 jsonpickle
 tinydb
+flake8-html
+black

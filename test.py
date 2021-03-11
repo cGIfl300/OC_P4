@@ -1,6 +1,6 @@
-from json import dumps
+# from json import dumps
 
-from tinydb import TinyDB
+# from tinydb import TinyDB
 
 from simulate_matchs import simulate_match
 from tournament import Tournament
@@ -70,14 +70,14 @@ def test():
     for _ in properties:
         tournois.add_player(_)
 
-    db = TinyDB("data/db.json")
-    players_table = db.table("players")
-    players_table.truncate()
+    # db = TinyDB("data/db.json")
+    # players_table = db.table("players")
+    # players_table.truncate()
     for player in tournois.players:
         print(player.surname)
 
         # Serialization players
-        players_table.insert(dumps(player.__dict__))
+        # players_table.insert(dumps(player.__dict__))
 
     for _ in range(tournois.rounds + 1):
         print(f"Tour numéro {_ + 1}")
