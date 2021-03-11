@@ -39,4 +39,5 @@ You can see it on the [project's website](https://cgifl300.github.io/OC_P4/).
 
 ## User Guide
 
-*Here will be the user guide...*
+*Here will be the user guide...*  
+*Hello world*
