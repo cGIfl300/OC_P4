@@ -17,7 +17,8 @@ def parse_arguments():
         "-l", "--list", help="list tournaments backups", action="store_true"
     )
 
-    parser.add_argument("-b", "--backup", help="backup tournament", action="store_true")
+    parser.add_argument("-b", "--backup", help="backup tournament",
+                        action="store_true")
 
     parser.add_argument(
         "-r",
@@ -36,7 +37,8 @@ def parse_arguments():
     parser.add_argument("-n", "--next", help="next tour", action="store_true")
 
     parser.add_argument(
-        "-sc", "--scores", help="print actual players scores", action="store_true"
+        "-sc", "--scores", help="print actual players scores",
+        action="store_true"
     )
 
     parser.add_argument(
@@ -105,7 +107,8 @@ def update_players_ranks():
         new_rank = input("Nouveau classement: ")
         new_rank = convert_to_integer(new_rank)
         if not new_rank:
-            print("Le nouveau classement dois être un entier, on passe au suivant.")
+            print(
+                "Le nouveau classement dois être un entier, on passe au suivant.")
             continue
         else:
             _.rank = new_rank
@@ -119,7 +122,8 @@ def next_tour():
 
 
 def tournaments_list():
-    print("Liste des tournois sauvegardés:\n" "-------------------------------\n")
+    print(
+        "Liste des tournois sauvegardés:\n" "-------------------------------\n")
     db = TinyDB("data/db.json")
     tournaments_table = db.table("tournaments")
     count = 0
@@ -143,7 +147,7 @@ def active_tournament_info():
         "---------------\n"
         f"Nom: {tournament.name}\n"
         f"Date: {tournament.date}\n"
-        f"Tour actif: {tournament.active_tour+1}"
+        f"Tour actif: {tournament.active_tour + 1}"
     )
 
 
@@ -166,7 +170,8 @@ def restore_tournament(selected_tournament):
     for _ in tournaments_table:
         count += 1
         if count == selected_tournament:
-            tournament = Tournament(jsonpickle.decode(_["Tournaments"]).__dict__)
+            tournament = Tournament(
+                jsonpickle.decode(_["Tournaments"]).__dict__)
             print(f"{count} - {tournament.name}")
             # Is now the activated tournament
             tournament.save()
@@ -200,8 +205,10 @@ def enter_results():
 
     for match in tournament.tours[tournament.active_tour].matchs:
         print(f"Round {tournament.active_tour}")
-        print(f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
-        print(f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
+        print(
+            f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
+        print(
+            f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
         match_score = input(
             "1. Joueur 1 gagnant\n" "2. Joueur 2 gagnant\n" "3. Match Null\n"
         )

@@ -81,7 +81,8 @@ def test():
 
     for _ in range(tournois.rounds + 1):
         print(f"Tour numéro {_ + 1}")
-        tournois.new_tour()
+        if not tournois.new_tour():
+            break
         tournois.stop_tour()
         simulate_match(tournois)
         print(

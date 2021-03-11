@@ -4,8 +4,10 @@ from random import randint
 def simulate_match(tournament):
     for match in tournament.tours[tournament.active_tour].matchs:
         print(f"Round {tournament.active_tour}")
-        print(f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
-        print(f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
+        print(
+            f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
+        print(
+            f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
         # match_score = input("1. Joueur 1 gagnant\n"
         #                     "2. Joueur 2 gagnant\n"
         #                     "3. Match Null\n")

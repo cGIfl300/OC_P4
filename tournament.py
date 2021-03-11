@@ -33,10 +33,11 @@ class Tournament(Basic):
         """
         if self.active_tour == self.rounds - 1:
             print("Le tournois est terminé.")
-            return
+            return False
         self.active_tour += 1
         self.tours.append(Tour(self))
         self.save()
+        return True
 
     def stop_tour(self):
         """
@@ -57,11 +58,11 @@ class Tournament(Basic):
         for _ in self.tours:
             for match in _.matchs:
                 if (match.player1.surname == player.surname) and (
-                    match.player1.forename == player.forename
+                        match.player1.forename == player.forename
                 ):
                     score_total += match.score1
                 if (match.player2.surname == player.surname) and (
-                    match.player2.forename == player.forename
+                        match.player2.forename == player.forename
                 ):
                     score_total += match.score2
         return score_total
@@ -78,19 +79,19 @@ class Tournament(Basic):
                 score_total = 0
                 # Match for player1
                 if (
-                    (match.player1.surname == player1.surname)
-                    and (match.player1.forename == player1.forename)
-                    or (match.player2.surname == player1.surname)
-                    and (match.player2.forename == player1.forename)
+                        (match.player1.surname == player1.surname)
+                        and (match.player1.forename == player1.forename)
+                        or (match.player2.surname == player1.surname)
+                        and (match.player2.forename == player1.forename)
                 ):
                     score_total += 1
 
                 # Match for player2
                 if (
-                    (match.player1.surname == player2.surname)
-                    and (match.player1.forename == player2.forename)
-                    or (match.player2.surname == player2.surname)
-                    and (match.player2.forename == player2.forename)
+                        (match.player1.surname == player2.surname)
+                        and (match.player1.forename == player2.forename)
+                        or (match.player2.surname == player2.surname)
+                        and (match.player2.forename == player2.forename)
                 ):
                     score_total += 1
                 if score_total == 2:
@@ -170,7 +171,8 @@ class Tour:
             player1 = self.ranked_players[_]
             player2 = self.ranked_players[_ + median]
 
-            while self.tournament.played_togethers(player1, player2) or out_of_players:
+            while self.tournament.played_togethers(player1,
+                                                   player2) or out_of_players:
 
                 if (_ + median + players_cursor) < (len_players_list - 1):
                     players_cursor += 1
