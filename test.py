@@ -8,6 +8,7 @@ from tournament import Tournament
 
 
 def test():
+    print("Création d'un tournois de 4 rounds avec 8 joueurs.")
     rounds_to_test = 4
     tournois = Tournament({"rounds": rounds_to_test})
     properties = [
@@ -71,7 +72,7 @@ def test():
     for _ in properties:
         tournois.add_player(_)
 
-    # Insert all players from the tuple
+    # Insert all players from the tuple to a table named "players"
     db = TinyDB("data/db.json")
     players_table = db.table("players")
     # Flush the players table
@@ -80,8 +81,10 @@ def test():
     players_table.insert_multiple(properties)
 
     # Testing object properties (player's name)
-    for player in tournois.players:
-        print(player.surname)
+    # for player in tournois.players:
+    #     print(player.surname)
+
+    print("Jouer les tournois et simuler les résultats.")
 
     for _ in range(tournois.rounds + 1):
         print(f"Tour numéro {_ + 1}")
@@ -89,11 +92,13 @@ def test():
             break
         tournois.stop_tour()
         simulate_match(tournois)
-        print(
-            f"Affichage du score {tournois.players[0].surname}"
-            f" {tournois.players[0].forename}"
-        )
-        print(f"Score: {tournois.score_player(tournois.players[0])}")
+
+        print("Affichage des résultats des joueurs:")
+        for player in tournois.players:
+            print(
+                f"Affichage du score de {player.surname}"
+                f" {player.forename}: {tournois.score_player(player)}"
+            )
 
 
 if __name__ == "__main__":
