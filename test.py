@@ -1,5 +1,3 @@
-from tinydb import TinyDB
-
 from simulate_matchs import simulate_match
 from tournament import Tournament
 
@@ -69,14 +67,6 @@ def test():
     for _ in properties:
         tournois.add_player(_)
 
-    # Insert all players from the tuple to a table named "players"
-    db = TinyDB("data/db.json")
-    players_table = db.table("players")
-    # Flush the players table
-    players_table.truncate()
-    # Save players
-    players_table.insert_multiple(properties)
-
     # Testing object properties (player's name)
     # for player in tournois.players:
     #     print(player.surname)
@@ -86,11 +76,11 @@ def test():
     for _ in range(tournois.rounds + 1):
         print(f"Tour numéro {_ + 1}")
         if not tournois.new_tour():
-            break
+            return
         tournois.stop_tour()
         simulate_match(tournois)
-
-        print("Affichage des résultats des joueurs:")
+        print("\nAffichage des résultats des joueurs:"
+              "\n------------------------------------")
         for player in tournois.players:
             print(
                 f"Affichage du score de {player.surname}"
