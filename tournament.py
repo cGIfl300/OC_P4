@@ -15,6 +15,7 @@ class Tournament(Basic):
         self.tours = []
         self.rounds = 4
         self.active_tour = -1
+        self.date = 0
         self.name = "Untilted"
         super().__init__(dic)
 

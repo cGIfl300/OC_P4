@@ -86,6 +86,7 @@ def test():
                 f"Affichage du score de {player.surname}"
                 f" {player.forename}: {tournois.score_player(player)}"
             )
+
     # Players by rank
     print("\nAffichage des joueurs par rang:\n"
           "-------------------------------\n")
