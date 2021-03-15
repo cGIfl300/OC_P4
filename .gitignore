@@ -2,3 +2,4 @@ env/
 __pycache__/
 .idea/
 /data/db.json
+/data/db_with_one_created_tournament.json
