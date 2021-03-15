@@ -24,13 +24,13 @@ Open a shell and go inside the project folder, then use :
 To activate the venv, use:  
 `source env/bin/activate`  
 or for Microsoft Windows users:  
-`env/Scripts/activate.bat`  
-  
-### Install required libs  
-  
+`env/Scripts/activate.bat`
+
+### Install required libs
+
 To install the required libs use:  
-`pip install -r requirements.txt`  
-  
+`pip install -r requirements.txt`
+
 ### Launch the main application
 
 To launch the main application, then getting help from the command line
@@ -47,7 +47,7 @@ You can see it on the [project's website](https://cgifl300.github.io/OC_P4/).
 
 ## Usage
 
-usage: `python main.py [-h] [-c] [-l] [-b] [-r RESTORE] [-a] [-res] [-n] [-sc] [-er]`
+usage: `main.py [-h] [-c] [-l] [-b] [-r RESTORE] [-a] [-res] [-n] [-sc] [-er] [-srank] [-snames]`
 
 optional arguments:
 
@@ -60,4 +60,6 @@ optional arguments:
 + **-res, --results**       enter matchs results
 + **-n, --next**            next tour
 + **-sc, --scores**         print actual players scores
-+ **-er, --editranks**      update players ranks  
++ **-er, --editranks**      update players ranks
++ **-srank, --sortedbyrank**   print players ordered by ranks
++ **-snames, --sortedbynames** print players ordered by names  

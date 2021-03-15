@@ -76,7 +76,7 @@ def test():
     for _ in range(tournois.rounds + 1):
         print(f"Tour numéro {_ + 1}")
         if not tournois.new_tour():
-            return
+            continue
         tournois.stop_tour()
         simulate_match(tournois)
         print("\nAffichage des résultats des joueurs:"
@@ -86,6 +86,26 @@ def test():
                 f"Affichage du score de {player.surname}"
                 f" {player.forename}: {tournois.score_player(player)}"
             )
+    # Players by rank
+    print("\nAffichage des joueurs par rang:\n"
+          "-------------------------------\n")
+    ranked_players = tournois.list_players_by_rank()
+    rank = 0
+    for _ in ranked_players:
+        rank += 1
+        print(
+            f"{rank} - {_.rank} {_.surname}"
+            f" {_.forename}")
+
+    # Players by names
+    print("\nAffichage des joueurs par ordre alphabétique:\n"
+          "---------------------------------------------\n")
+    ranked_players = tournois.list_players_by_names()
+    rank = 0
+    for _ in ranked_players:
+        rank += 1
+        print(
+            f"{rank} - {_.surname} {_.forename}")
 
 
 if __name__ == "__main__":

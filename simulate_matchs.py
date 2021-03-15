@@ -3,7 +3,7 @@ from random import randint
 
 def simulate_match(tournament):
     for match in tournament.tours[tournament.active_tour].matchs:
-        print(f"Simulating Round {tournament.active_tour +1}")
+        print(f"Simulating Round {tournament.active_tour + 1}")
         print(
             f"Joueur (Joueur 1): {match.player1.surname} "
             f"{match.player1.forename}")

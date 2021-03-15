@@ -134,6 +134,29 @@ class Tournament(Basic):
         dic = {"Tournaments": jsonpickle.encode(self)}
         at_table.insert(dic)
 
+    def list_players_by_rank(self):
+        players_unordered = self.players
+        ranked_players = sorted(
+            players_unordered,
+            key=lambda ordering_value: (
+                ordering_value.rank,
+                self.score_player(ordering_value),
+            ),
+        )
+        ranked_players.reverse()
+        return ranked_players
+
+    def list_players_by_names(self):
+        players_unordered = self.players
+        ranked_players = sorted(
+            players_unordered,
+            key=lambda ordering_value: (
+                ordering_value.surname,
+                ordering_value.forename,
+            ),
+        )
+        return ranked_players
+
 
 class Tour:
     def __init__(self, tournament):

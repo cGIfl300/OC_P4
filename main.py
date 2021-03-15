@@ -45,6 +45,16 @@ def parse_arguments():
         "-er", "--editranks", help="update players ranks", action="store_true"
     )
 
+    parser.add_argument(
+        "-srank", "--sortedbyrank", help="print players ordered by ranks",
+        action="store_true"
+    )
+
+    parser.add_argument(
+        "-snames", "--sortedbynames", help="print players ordered by names",
+        action="store_true"
+    )
+
     return parser.parse_args()
 
 
@@ -83,6 +93,33 @@ def create_tournament():
         print(f"Ajout du joueur {_ + 1} sur {number_of_players}")
         add_player(tournament)
     tournament.save()
+
+
+def sorted_by_rank():
+    tournament = Tournament({})
+    tournament.restore()
+    print("\nAffichage des joueurs par rang:\n"
+          "-------------------------------\n")
+    ranked_players = tournament.list_players_by_rank()
+    rank = 0
+    for _ in ranked_players:
+        rank += 1
+        print(
+            f"{rank} - {_.rank} {_.surname}"
+            f" {_.forename}")
+
+
+def sorted_by_names():
+    tournament = Tournament({})
+    tournament.restore()
+    print("\nAffichage des joueurs par ordre alphabétique:\n"
+          "---------------------------------------------\n")
+    ranked_players = tournament.list_players_by_names()
+    rank = 0
+    for _ in ranked_players:
+        rank += 1
+        print(
+            f"{rank} - {_.surname} {_.forename}")
 
 
 def tournament_backup():
@@ -258,6 +295,10 @@ def main():
         tournament_score()
     if args.editranks:
         update_players_ranks()
+    if args.sortedbyrank:
+        sorted_by_rank()
+    if args.sortedbynames:
+        sorted_by_names()
 
 
 if __name__ == "__main__":
