@@ -49,7 +49,8 @@ def parse_arguments():
 
 
 def create_tournament():
-    """Création d'un tournois, instanciation de la class puis sauvegarde en tan que tournois actif.
+    """Création d'un tournois, instanciation de la class puis sauvegarde en tan
+    que tournois actif.
     :return:
     """
     name = input("Nom du Tournois: ")
@@ -79,7 +80,7 @@ def create_tournament():
     )
     # Add players...
     for _ in range(number_of_players):
-        print(f"Ajout du joueur {_} sur {number_of_players}")
+        print(f"Ajout du joueur {_ + 1} sur {number_of_players}")
         add_player(tournament)
     tournament.save()
 
@@ -95,7 +96,8 @@ def tournament_score():
     tournament.restore()
     for _ in tournament.players:
         print(
-            f"Joueur: {_.surname} {_.forename} - {tournament.score_player(_)} point(s)."
+            f"Joueur: {_.surname} {_.forename} - "
+            f"{tournament.score_player(_)} point(s)."
         )
 
 
@@ -108,7 +110,8 @@ def update_players_ranks():
         new_rank = convert_to_integer(new_rank)
         if not new_rank:
             print(
-                "Le nouveau classement dois être un entier, on passe au suivant.")
+                "Le nouveau classement dois être un entier, on passe au "
+                "suivant.")
             continue
         else:
             _.rank = new_rank
@@ -123,7 +126,8 @@ def next_tour():
 
 def tournaments_list():
     print(
-        "Liste des tournois sauvegardés:\n" "-------------------------------\n")
+        "Liste des tournois sauvegardés:\n"
+        "-------------------------------\n")
     db = TinyDB("data/db.json")
     tournaments_table = db.table("tournaments")
     count = 0
@@ -206,9 +210,11 @@ def enter_results():
     for match in tournament.tours[tournament.active_tour].matchs:
         print(f"Round {tournament.active_tour}")
         print(
-            f"Joueur (Joueur 1): {match.player1.surname} {match.player1.forename}")
+            f"Joueur (Joueur 1): {match.player1.surname} "
+            f"{match.player1.forename}")
         print(
-            f"Contre (Joueur 2): {match.player2.surname} {match.player2.forename}")
+            f"Contre (Joueur 2): {match.player2.surname} "
+            f"{match.player2.forename}")
         match_score = input(
             "1. Joueur 1 gagnant\n" "2. Joueur 2 gagnant\n" "3. Match Null\n"
         )

@@ -40,6 +40,19 @@ The report will be published in docs/flake8-report
 
 You can see it on the [project's website](https://cgifl300.github.io/OC_P4/).
 
-## User Guide
+## Usage
 
-*Here will be the user guide...*
+usage: `python main.py [-h] [-c] [-l] [-b] [-r RESTORE] [-a] [-res] [-n] [-sc] [-er]`
+
+optional arguments:
+
++ **-h, --help**            show this help message and exit
++ **-c, --create**          create a new tournament
++ **-l, --list**            list tournaments backups
++ **-b, --backup**          backup tournament
++ **-r RESTORE, --restore RESTORE**      restore selected tournament number
++ **-a, --active**          list active tournament
++ **-res, --results**       enter matchs results
++ **-n, --next**            next tour
++ **-sc, --scores**         print actual players scores
++ **-er, --editranks**      update players ranks  

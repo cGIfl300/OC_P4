@@ -1,6 +1,3 @@
-# from json import dumps
-
-# from tinydb import TinyDB
 from tinydb import TinyDB
 
 from simulate_matchs import simulate_match
@@ -34,7 +31,7 @@ def test():
             "rank": 2093,
         },
         {
-            "surname": "MALFOY",
+            "surname": "MALORY",
             "forename": "Lucie",
             "birthday": 45,
             "sex": False,
