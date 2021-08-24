@@ -1,5 +1,5 @@
-env/
-__pycache__/
 .idea/
+venv/
+__pycache__/
 /data/db.json
 /data/db_with_one_created_tournament.json
